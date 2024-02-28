@@ -1,1 +1,16 @@
+// Basic gates - Data Flow Modeling (Continous Assignment)
 
+module gates(
+input a, b,
+output reg c,d,e,f,g,h,i
+);
+  
+  assign c = ~a;    // NOT
+  assign d = a & b; // AND
+  assign e = a | b; // OR
+  assign f = a ^ b; // XOR
+  assign g = ~(a & b); //NAND
+  assign h = ~(a | b); //NOR
+  assign i = ~(a ^ b); //XNOR
+  
+endmodule
