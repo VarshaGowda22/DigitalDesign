@@ -1,28 +1,107 @@
+##########################################################################################################################################################################################
 // Basic gates - Data Flow Modeling (Continous Assignment)
 // DUT
 module gates(
 input a, b,
-output reg c,d,e,f,g,h,i
+output reg nt, ad, orr, xr, nad, norr, xnr
 );
   
-  assign c = ~a;    // NOT
-  assign d = a & b; // AND
-  assign e = a | b; // OR
-  assign f = a ^ b; // XOR
-  assign g = ~(a & b); //NAND
-  assign h = ~(a | b); //NOR
-  assign i = ~(a ^ b); //XNOR
+  assign nt = ~a;    // NOT
+  assign ad = a & b; // AND
+  assign orr = a | b; // OR
+  assign xr = a ^ b; // XOR
+  assign nad = ~(a & b); //NAND
+  assign norr = ~(a | b); //NOR
+  assign xnr = ~(a ^ b); //XNOR
   
 endmodule
+####################################################################################################################################################################################
+// Basic gates - Gate Level Modeling
 
+module gates(
+input a, b,
+output reg nt, ad, orr, xr, nad, norr, xnr
+);
+  
+  not(nt,a);
+  and(ad,a,b);
+  or(orr, a, b);
+  xor(xr,a,b);
+  nand(nad,a,b);
+  nor(norr,a,b);
+  xnor(xnr,a,b);
+  
+endmodule
+####################################################################################################################################################################################################
+// Basic Gates - Behavirol Modelling
 
+module gates(
+input a, b,
+output reg nt,ad,orr,xr,nad,norr,xnr
+);
+
+  // NOT
+  always @ (a) begin
+    nt = ~a;
+  end 
+  
+  // AND
+  always@(a,b) begin
+    if (a == 1 & b == 1)
+      ad = 1;
+    else if (a == 0 | b == 0)
+      ad = 0;
+  end
+  
+  // OR
+  always @ (a, b) begin
+    if (a == 0 & b == 0)
+      orr = 0;
+    else
+      orr = 1;
+  end
+  
+  //XOR
+  always @ (a, b) begin
+    if (a == b)
+      xr = 0;
+    else 
+      xr = 1;
+  end
+
+  // NAND
+  always @ (a, b) begin
+    if ( a == 1 & b == 1)
+      nad = 0;
+    else
+      nad = 1;
+  end 
+  
+  // NOR
+  always @ (a, b) begin
+    if ( a == 0 & b == 0)
+      norr = 1;
+    else 
+      norr = 0;
+  end
+  
+  // XNOR
+  always @ (a, b) begin
+    if (a == b)
+      xnr = 1;
+    else 
+      xnr = 0;
+  end
+endmodule
+#################################################################################################################################################################################################
 // Test Bench
-`timescale 10ns/1ns
+
+timescale 10ns/1ns
 module gates_tb();
   reg a, b;
-  wire c, d, e, f, g, h, i;
+  wire nt, ad, orr, xr, nad, norr, xnr;
   
-  gates GATES(.a(a), .b(b), .c(c), .d(d), .e(e), .f(f), .g(g), .h(h), .i(i) );
+  gates GATES(.a(a), .b(b), .nt(nt), .ad(ad), .orr(orr), .xr(xr), .nad(nad), .norr(norr), .xnr(xnr) );
   
   initial begin
     a = 0;
@@ -39,16 +118,8 @@ module gates_tb();
     #1;
   end
   
-  initial begin
-    $display("Value of c is %b", c);
-    $display("Value of d is %b", d);
-    $display("Value of e is %b", e);
-    $display("Value of f is %b", f); 
-    $display("Value of g is %b", g);
-    $display("Value of h is %b", h);  
-    $display("Value of i is %b", i);   
-    $monitor("value of a = %b, value of b = %b, value of c = %b, d = %b, e = %b, f = %b, g = %b, h = %b, a = %b", a, b, c, d, e, f, g, h, i);
+  initial begin  
+    $monitor("value of a = %b, value of b = %b, value of nt = %b, ad = %b, orr = %b, xr = %b, nad = %b, norr = %b, xnr = %b", a, b, nt,ad,orr,xr,nad,norr,xnr);
     $dumpfile("dump.vcd");
     $dumpvars();
   end
-endmodule
