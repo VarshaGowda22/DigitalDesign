@@ -1,0 +1,7 @@
+// Half Adder
+// Gate Level Modeling
+module halfadder ( input a,b, output reg s, c);
+  and(c,a,b);
+  xor(s,a,b);
+endmodule
+##############################################################################################################################################
