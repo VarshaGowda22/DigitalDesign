@@ -5,3 +5,11 @@ module halfadder ( input a,b, output reg s, c);
   xor(s,a,b);
 endmodule
 ##############################################################################################################################################
+// Data Flow Level Modeling - Continuous Assignment
+module halfadder ( input a,b, output reg s, c);
+  
+  assign s = a ^ b;
+  assign c = a & b;  
+  
+endmodule
+##################################################################################################################################
