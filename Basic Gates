@@ -123,3 +123,4 @@ module gates_tb();
     $dumpfile("dump.vcd");
     $dumpvars();
   end
+endmodule
