@@ -19,5 +19,66 @@ module fulladder( input a, b, cin, output s, cout);
 endmodule
   
 ###########################################################################################################################################
+// 4 bit Adder - Data flow Method
+module FA_4 (  input [3:0] a, [3:0] b,
+                  input cin,
+                  output reg c_out,
+                  output reg [3:0] sum);
+ 
+    assign {c_out, sum} = a + b + cin;   
+
+endmodule
+#########################################################################################################################################
+// 4 bit Adder - Behavioral
+module FA_4 (  input [3:0] a, [3:0] b,
+                  input cin,
+                  output reg c_out,
+                  output reg [3:0] sum);
+  always@(*) begin
+    
+    {c_out, sum} = a + b + cin; 
+  end
+
+endmodule
+####################################################################################################################################
+Test Bench
+//Testbench adder
+`timescale 1ns/1ns
+module fa_tb();
+  reg [3:0] a;
+  reg [3:0] b;
+  reg cin;
+  wire [3:0]sum;
+  wire c_out;
+  int i;
+  
+  FA_4 FA(.a(a), .b(b), .cin(cin), .sum(sum), .c_out(c_out));
+  
+  initial begin
+   a = 4'b1111;
+   b = 4'b1111;
+   cin = 0;
+   #1;
+   a = 4'b1111;
+   b = 4'b1111;
+   cin = 1; 
+
+    for (i = 0; i <= 5; i = i + 1)begin
+      #1; a = $random;
+      b = $random;
+      cin = ~cin;
+    end
+   
+  end
+  
+  initial begin
+    $monitor("a = %b, b = %b, cin = %b, sum= %b, c_out = %b",a,b,cin,sum,c_out); 
+    $dumpfile("dump.vcd");
+    $dumpvars(1);
+  end
+  
+endmodule
+
+    
 
   
